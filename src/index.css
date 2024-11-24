@@ -1,64 +1,53 @@
-/* จัดการ layout หลัก */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 20px auto;
   padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Login/Logout */
-.login-container {
+h1 {
   text-align: center;
+  color: #333;
   margin-bottom: 20px;
+  font-size: 2rem;
 }
 
-.login-button,
-.logout-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #007bff;
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button[type="submit"] {
+  background-color: #28a745;
   color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
-.logout-button {
-  background-color: #dc3545;
-}
-
-.login-button:hover,
-.logout-button:hover {
-  opacity: 0.9;
-}
-
-/* Search Bar */
-.search-bar {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-bar input {
-  width: 100%;
-  max-width: 600px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Create Post */
-.create-post-container {
-  margin-bottom: 20px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Post Feed */
-.post-feed-container {
-  margin-top: 20px;
+button[type="submit"]:hover {
+  background-color: #218838;
 }

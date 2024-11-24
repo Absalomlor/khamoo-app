@@ -1,7 +1,7 @@
 import React from "react";
 import PostView from "./PostView";
 
-const PostFeed = ({ posts, isLoggedIn, updatePost, deletePost }) => {
+const PostFeed = ({ posts, isLoggedIn, loggedInUser, updatePost, deletePost }) => {
   return (
     <div>
       {posts.length === 0 ? (
@@ -12,6 +12,7 @@ const PostFeed = ({ posts, isLoggedIn, updatePost, deletePost }) => {
             key={post.id}
             post={post}
             isLoggedIn={isLoggedIn}
+            loggedInUser={loggedInUser}
             updatePost={updatePost}
             deletePost={deletePost}
           />

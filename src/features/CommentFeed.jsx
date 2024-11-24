@@ -4,7 +4,9 @@ const CommentFeed = ({ comments }) => {
   return (
     <div>
       {comments.map((comment, index) => (
-        <p key={index}>{comment}</p>
+        <p key={index}>
+          <strong>{comment.username || "Anonymous"}:</strong> {comment.text}
+        </p>
       ))}
     </div>
   );

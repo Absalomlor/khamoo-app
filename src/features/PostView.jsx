@@ -3,13 +3,17 @@ import CommentFeed from "./CommentFeed";
 import AddComment from "./AddComment";
 import LikeAction from "./LikeAction";
 
-const PostView = ({ post, isLoggedIn, updatePost, deletePost }) => {
+const PostView = ({ post, isLoggedIn, loggedInUser, updatePost, deletePost }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState({ ...post });
 
   const handleEdit = () => setIsEditing(true);
   const handleSave = () => {
-    updatePost(editedPost);
+    updatePost({
+      ...editedPost,
+      comments: post.comments,
+      likes: post.likes,
+    });
     setIsEditing(false);
   };
 
@@ -32,26 +36,25 @@ const PostView = ({ post, isLoggedIn, updatePost, deletePost }) => {
         <div>
           <h2>{post.title}</h2>
           <p>{post.content}</p>
+          <p><strong>Posted by:</strong> {post.username || "Unknown"}</p>
           <LikeAction post={post} updatePost={updatePost} />
-
-          {/* สิทธิ์แก้ไขและลบโพสต์ (เฉพาะผู้ใช้ล็อกอิน) */}
           {isLoggedIn && (
             <div className="post-actions">
               <button onClick={handleEdit}>Edit</button>
               <button onClick={() => deletePost(post.id)}>Delete</button>
             </div>
           )}
-
-          {/* คอมเมนต์ */}
           <CommentFeed comments={post.comments} />
           {isLoggedIn && (
             <AddComment
-              addComment={(newComment) =>
-                updatePost({
+              addComment={(newComment) => {
+                const updatedPost = {
                   ...post,
-                  comments: [...post.comments, newComment],
-                })
-              }
+                  comments: [...post.comments, { ...newComment }],
+                };
+                updatePost(updatedPost);
+              }}
+              loggedInUser={loggedInUser}
             />
           )}
         </div>

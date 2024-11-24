@@ -1,71 +1,88 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PostFeed from "./features/PostFeed";
 import CreatePost from "./features/CreatePost";
 import SearchPosts from "./features/SearchPosts";
+import './App.css';
 
 const App = () => {
-  // โหลดโพสต์จาก LocalStorage หรือใช้โพสต์ตัวอย่างถ้าไม่มี
+  // เก็บข้อมูลโพสต์ใน State
   const [posts, setPosts] = useState(() => {
     const savedPosts = localStorage.getItem("posts");
-    return savedPosts ? JSON.parse(savedPosts) : [
-      {
-        id: 1,
-        title: "Welcome to Social Media App!",
-        content: "This is your first post. Add more posts by logging in!",
-        likes: 5,
-        comments: ["Great post!", "Very useful app!"],
-      },
-      {
-        id: 2,
-        title: "React is Awesome!",
-        content: "React makes it easy to build interactive user interfaces.",
-        likes: 8,
-        comments: ["I totally agree!", "React rocks!"],
-      },
-    ];
+    return savedPosts
+      ? JSON.parse(savedPosts)
+      : [
+          {
+            id: 1,
+            title: "Welcome to Social Media App!",
+            content: "This is your first post. Add more posts by logging in!",
+            likes: 5,
+            comments: [{ text: "Great post!", username: "Admin" }],
+            username: "Admin",
+          },
+        ];
   });
 
-  const [searchQuery, setSearchQuery] = useState(""); // คำค้นหา
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // สถานะล็อกอิน
+  // เก็บข้อมูลผู้ใช้งาน
+  const [users, setUsers] = useState(() => {
+    const savedUsers = localStorage.getItem("users");
+    return savedUsers ? JSON.parse(savedUsers) : []; // โหลดข้อมูลผู้ใช้จาก localStorage
+  });
 
-  // ฟังก์ชันสำหรับบันทึกโพสต์ลงใน LocalStorage
+  // State อื่น ๆ
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  // บันทึก Posts ลง localStorage
   const savePostsToLocalStorage = (posts) => {
     localStorage.setItem("posts", JSON.stringify(posts));
   };
 
-  // เพิ่มโพสต์ใหม่
+  // บันทึก Users ลง localStorage
+  const saveUsersToLocalStorage = (users) => {
+    localStorage.setItem("users", JSON.stringify(users));
+  };
+
+  // ฟังก์ชันเพิ่มโพสต์
   const addPost = (newPost) => {
-    const updatedPosts = [...posts, { ...newPost, id: Date.now(), likes: 0, comments: [] }];
+    if (!loggedInUser) return;
+    const updatedPosts = [
+      ...posts,
+      { ...newPost, id: Date.now(), likes: 0, comments: [], username: loggedInUser },
+    ];
     setPosts(updatedPosts);
     savePostsToLocalStorage(updatedPosts);
   };
 
-  // แก้ไขโพสต์
-  const updatePost = (updatedPost) => {
-    const updatedPosts = posts.map((post) =>
-      post.id === updatedPost.id ? updatedPost : post
-    );
-    setPosts(updatedPosts);
-    savePostsToLocalStorage(updatedPosts);
+  // ฟังก์ชันสมัครสมาชิก
+  const handleSignUp = (username, password) => {
+    const newUser = { username, password };
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    saveUsersToLocalStorage(updatedUsers); // บันทึกผู้ใช้ใหม่ลง localStorage
+    setIsSignUpOpen(false);
+    alert("Sign up successful! You can now log in.");
   };
 
-  // ลบโพสต์
-  const deletePost = (postId) => {
-    const updatedPosts = posts.filter((post) => post.id !== postId);
-    setPosts(updatedPosts);
-    savePostsToLocalStorage(updatedPosts);
+  // ฟังก์ชันเข้าสู่ระบบ
+  const handleLogin = (username, password) => {
+    const user = users.find((user) => user.username === username && user.password === password);
+    if (user) {
+      setIsLoggedIn(true);
+      setLoggedInUser(user.username);
+      setIsLoginOpen(false);
+    } else {
+      alert("Invalid username or password");
+    }
   };
 
-  // ค้นหาโพสต์
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.content.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // จัดการการล็อกอิน/ออก
-  const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
+  // ฟังก์ชันออกจากระบบ
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setLoggedInUser(null);
+  };
 
   return (
     <div className="container">
@@ -75,19 +92,32 @@ const App = () => {
       <div className="login-container">
         {isLoggedIn ? (
           <div>
-            <p>Welcome, User!</p>
+            <p>Welcome, {loggedInUser}!</p>
             <button className="logout-button" onClick={handleLogout}>
               Logout
             </button>
           </div>
         ) : (
           <div>
-            <button className="login-button" onClick={handleLogin}>
+            <button className="login-button" onClick={() => setIsLoginOpen(true)}>
               Login
+            </button>
+            <button className="signup-button" onClick={() => setIsSignUpOpen(true)}>
+              Sign Up
             </button>
           </div>
         )}
       </div>
+
+      {/* Popup Sign Up */}
+      {isSignUpOpen && (
+        <SignUpPopup onSignUp={handleSignUp} onClose={() => setIsSignUpOpen(false)} />
+      )}
+
+      {/* Popup Login */}
+      {isLoginOpen && (
+        <LoginPopup onLogin={handleLogin} onClose={() => setIsLoginOpen(false)} />
+      )}
 
       {/* ค้นหาโพสต์ */}
       <div className="search-bar">
@@ -104,11 +134,104 @@ const App = () => {
       {/* แสดงฟีดโพสต์ */}
       <div className="post-feed-container">
         <PostFeed
-          posts={filteredPosts}
+          posts={posts.filter(
+            (post) =>
+              post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              post.content.toLowerCase().includes(searchQuery.toLowerCase())
+          )}
           isLoggedIn={isLoggedIn}
-          updatePost={updatePost}
-          deletePost={deletePost}
+          loggedInUser={loggedInUser}
+          updatePost={(updatedPost) => {
+            const updatedPosts = posts.map((post) =>
+              post.id === updatedPost.id ? updatedPost : post
+            );
+            setPosts(updatedPosts);
+            savePostsToLocalStorage(updatedPosts); // บันทึกโพสต์ที่อัปเดต
+          }}
+          deletePost={(postId) => {
+            const updatedPosts = posts.filter((post) => post.id !== postId);
+            setPosts(updatedPosts);
+            savePostsToLocalStorage(updatedPosts); // บันทึกโพสต์ที่ลบ
+          }}
         />
+      </div>
+    </div>
+  );
+};
+
+// Component Sign Up Popup
+const SignUpPopup = ({ onSignUp, onClose }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSignUp(username, password);
+    setUsername("");
+    setPassword("");
+  };
+
+  return (
+    <div className="popup">
+      <div className="popup-inner">
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Sign Up</button>
+        </form>
+        <button className="close-button" onClick={onClose}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Component Login Popup
+const LoginPopup = ({ onLogin, onClose }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onLogin(username, password);
+    setUsername("");
+    setPassword("");
+  };
+
+  return (
+    <div className="popup">
+      <div className="popup-inner">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Login</button>
+        </form>
+        <button className="close-button" onClick={onClose}>
+          Close
+        </button>
       </div>
     </div>
   );

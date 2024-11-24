@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const AddComment = ({ addComment }) => {
+const AddComment = ({ addComment, loggedInUser }) => {
   const [comment, setComment] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addComment(comment);
+    addComment({ text: comment, username: loggedInUser });
     setComment("");
   };
 
