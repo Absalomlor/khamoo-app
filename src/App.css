@@ -1,24 +1,47 @@
 .login-container {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: right; /* จัดตำแหน่งปุ่มให้อยู่ด้านขวา */
+}
+
+.login-button {
+  display: inline-block;
+  margin-right: 20px; /* เพิ่มระยะห่างทางขวา */
+}
+
+.signup-button {
+  display: inline-block;
+  margin-right: 40px;
+  margin-bottom: 15px;
+}
+
+.logout-button {
+  display: inline-block;
+  margin-right: 40px;
+  margin-bottom: 15px;
 }
 
 .login-button,
-.logout-button {
+.logout-button,
+.signup-button {
   padding: 10px 20px;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #007bff; /* สีพื้นหลัง */
   color: white;
   font-weight: bold;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .login-button:hover,
-.logout-button:hover {
-  background-color: #0056b3;
+.logout-button:hover,
+.signup-button:hover {
+  background-color: #0056b3; /* สี hover */
+  transform: scale(1.05); /* เพิ่มแอนิเมชันขยาย */
+}
+
+.signup-button {
+  margin-left: 0; /* ตั้งระยะห่างระหว่างปุ่ม Sign Up และ Login */
 }
 
 .search-bar {
@@ -33,4 +56,84 @@
   padding: 16px;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* เพิ่มพื้นหลังโปร่งแสง */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* ทำให้ popup อยู่ด้านหน้าสุด */
+}
+
+.popup-inner {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px; /* ความกว้างของ popup */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.popup h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Form Inputs */
+.popup input[type="text"],
+.popup input[type="password"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+}
+
+.popup input[type="text"]:focus,
+.popup input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  background-color: #fff;
+}
+
+/* Buttons */
+.popup button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #28a745; /* สีพื้นหลังของปุ่ม */
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.popup button:hover {
+  background-color: #218838; /* สีเมื่อ hover */
+  transform: scale(1.05); /* แอนิเมชันขยาย */
+}
+
+.popup .close-button {
+  background-color: #dc3545; /* สีปุ่มปิด */
+  color: white;
+  margin-top: 10px;
+}
+
+.popup .close-button:hover {
+  background-color: #c82333;
+}
+
+.icon {
+  font-size: 2.5rem;
+  vertical-align: 4px;
 }

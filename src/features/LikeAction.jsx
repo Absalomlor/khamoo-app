@@ -1,5 +1,5 @@
 import React from "react";
-import "./LikeButton.css";
+import './LikeButton.css';
 
 const LikeAction = ({ post, updatePost }) => {
   const handleLike = () => {
@@ -8,7 +8,7 @@ const LikeAction = ({ post, updatePost }) => {
 
   return (
     <button className="like-button" onClick={handleLike}>
-      <span className="like-icon">❤️</span>
+      <span className="like-icon">🍖</span>
       Like
       <span className="like-count">({post.likes})</span>
     </button>

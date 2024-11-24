@@ -1,7 +1,16 @@
+.post {
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .post-actions {
   display: flex;
-  gap: 10px; /* เพิ่มช่องว่างระหว่างปุ่ม */
-  margin-top: 10px; /* เพิ่มระยะห่างจากปุ่ม Like */
+  gap: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .post-actions button {
@@ -9,12 +18,24 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #6c757d;
   color: white;
   font-weight: bold;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .post-actions button:hover {
-  background-color: #0056b3;
+  background-color: #5a6268;
+}
+
+.comment {
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border-left: 3px solid #007bff;
+}
+
+.comment strong {
+  color: #007bff;
 }

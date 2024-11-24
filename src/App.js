@@ -86,7 +86,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1>Social Media App</h1>
+      <h1> Kha M<span className="icon">🐽</span>App </h1>
 
       {/* ระบบ Login/Logout */}
       <div className="login-container">

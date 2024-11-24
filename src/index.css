@@ -2,11 +2,12 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f2f5;
+  background-color: #e9ecef; /* สีพื้นหลัง */
 }
 
 .container {
-  max-width: 900px;
+  width: 100%; /* ให้ Container ขยายเต็มหน้าจอ */
+  max-width: 1200px; /* ขนาดสูงสุดของ Container */
   margin: 20px auto;
   padding: 20px;
 }
@@ -20,7 +21,7 @@ h1 {
 
 input[type="text"],
 textarea {
-  width: 100%;
+  width: 90%;
   padding: 12px;
   margin-bottom: 12px;
   border: 1px solid #ccc;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CommentFeed from "./CommentFeed";
 import AddComment from "./AddComment";
 import LikeAction from "./LikeAction";
+import './PostView.css';
 
 const PostView = ({ post, isLoggedIn, loggedInUser, updatePost, deletePost }) => {
   const [isEditing, setIsEditing] = useState(false);
